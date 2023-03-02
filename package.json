@@ -5,7 +5,8 @@
   "description": "backend web warungonline",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon node index.js",
+    "dev": "nodemon node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
