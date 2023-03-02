@@ -1,0 +1,20 @@
+import express from "express"
+import cors from "cors"
+import FileUpload from "express-fileupload"
+import produkRouter from "./routes/produkRouter.js"
+import clientRouter from "./routes/clientRouter.js"
+import cookieParser from "cookie-parser"
+import clientProductsRouter from "./routes/clientProductsRouter.js"
+
+const app = express()
+
+app.use(cookieParser())
+app.use(cors())
+app.use(FileUpload())
+
+app.use("/produk", produkRouter)
+app.use("/client", clientRouter)
+app.use("/clientProduk", clientProductsRouter)
+app.listen(3000, () => {
+    console.log("server running in localhost:3000")
+})
