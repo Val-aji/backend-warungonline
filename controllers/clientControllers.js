@@ -25,40 +25,40 @@ export const register = async (req, res) => {
         })
     }
 
-    const {namaLengkap, email, password, konfirmPassword, nomorWhatsapp, alamat} = req.body
-    const data = await clientModels.findAll({
-        where: {
-            [Sequelize.Op.or]: [{email}, {namaLengkap}]
-        }
-    })
-
-    let msgError;    
-    const filterEmail = email.match("@gmail.com")
-    const filterNomor = nomorWhatsapp.match(/[^0-9]/g)
-    
-    if(namaLengkap.length < 4 || namaLengkap.length > 50) {
-        msgError = "Nama Lengkap minimal 4 karakter dan maksimal 50 karakter"
-    } else if(data.length > 0) {
-        viewError(400,"email atau nama lengkap tidak valid", "email atau nama lengkap telah ada", )
-        return false
-    }else if(!filterEmail) {
-        viewError(400, "email not valid", "email harus ada @gmail.com")
-        return false
-    } else if(password !== konfirmPassword) {
-        viewError(400, "konfirm password not valid", "Konfirm password tidak sama dengan password asli")
-        return false
-    } else if(filterNomor) {
-        viewError(400, "Nomor Whatsapp tidak valid", "Input yang anda masukkan bukan nomor Whatsapp")
-        return false 
-    } else if(alamat.length < 10 || alamat.length > 100) {
-        msgError = "jumlah karakter alamat minimal 10 dan maksimal 100"
-    } else {
-        msgError = "Registrasi Gagal"
-    }
 
     // const hashPassword = bcrypt.hashSync(password, 8)
     
     try {   
+        const {namaLengkap, email, password, konfirmPassword, nomorWhatsapp, alamat} = req.body
+        const data = await clientModels.findAll({
+            where: {
+                [Sequelize.Op.or]: [{email}, {namaLengkap}]
+            }
+        })
+    
+        let msgError;    
+        const filterEmail = email.match("@gmail.com")
+        const filterNomor = nomorWhatsapp.match(/[^0-9]/g)
+        
+        if(namaLengkap.length < 4 || namaLengkap.length > 50) {
+            msgError = "Nama Lengkap minimal 4 karakter dan maksimal 50 karakter"
+        } else if(data.length > 0) {
+            viewError(400,"email atau nama lengkap tidak valid", "email atau nama lengkap telah ada", )
+            return false
+        }else if(!filterEmail) {
+            viewError(400, "email not valid", "email harus ada @gmail.com")
+            return false
+        } else if(password !== konfirmPassword) {
+            viewError(400, "konfirm password not valid", "Konfirm password tidak sama dengan password asli")
+            return false
+        } else if(filterNomor) {
+            viewError(400, "Nomor Whatsapp tidak valid", "Input yang anda masukkan bukan nomor Whatsapp")
+            return false 
+        } else if(alamat.length < 10 || alamat.length > 100) {
+            msgError = "jumlah karakter alamat minimal 10 dan maksimal 100"
+        } else {
+            msgError = "Registrasi Gagal"
+        }
         await clientModels.create({
             namaLengkap,
             email,
