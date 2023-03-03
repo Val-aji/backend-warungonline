@@ -15,12 +15,11 @@ app.use(FileUpload())
 app.use("/produk", produkRouter)
 app.use("/client", clientRouter)
 app.use("/clientProduk", clientProductsRouter)
-
 app.get("/", (req, res) => {
   res.send("sukses")
 })
 
 const port = process.env.PORT || 3000
-app.listen(PORT, () => {
+app.listen(port, () => {
     console.log("server running in localhost:3000")
 })
