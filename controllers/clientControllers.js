@@ -1,5 +1,5 @@
 import clientModels from "../models/clientModels.js"
-import bcrypt from "bcrypt"
+// import bcrypt from "bcrypt"
 import  Sequelize  from "sequelize"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
@@ -100,9 +100,11 @@ export const login = async (req, res) => {
         
         if(!user) return viewError(404, "email atau nomor telepon tidak valid", "email atau nomor handphone tidak ditemukan")
 
-        const comparePassword = bcrypt.compareSync(password, user.password)
-        if(!comparePassword) return viewError(401, "password tidak valid", "password yang anda masukkan salah!")
-
+        // const comparePassword = bcrypt.compareSync(password, user.password)
+        // if(!comparePassword) return viewError(401, "password tidak valid", "password yang anda masukkan salah!")
+        if(user.password !== password) {
+            return res.sendStatus(401)
+        }
         const token = jwt.sign({id: user.id }, process.env.SECRET_KEY)
         
         const options = {
