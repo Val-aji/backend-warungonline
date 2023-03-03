@@ -56,13 +56,13 @@ export const register = async (req, res) => {
         msgError = "Registrasi Gagal"
     }
 
-    const hashPassword = bcrypt.hashSync(password, 8)
+    // const hashPassword = bcrypt.hashSync(password, 8)
     
     try {   
         await clientModels.create({
             namaLengkap,
             email,
-            password: hashPassword,
+            password,
             nomorWhatsapp,
             alamat
         })
