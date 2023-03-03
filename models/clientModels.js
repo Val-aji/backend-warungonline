@@ -44,9 +44,9 @@ const clientModels = db.define("clients", {
 
 })
 
-// clientModels.sync()
-//     .then(() => console.log("tabel client berhasil dibuat"))
-//     .catch(() => console.log("tabel client gagal di buat"))
+ clientModels.sync()
+     .then(() => console.log("tabel client berhasil dibuat"))
+     .catch(() => console.log("tabel client gagal di buat"))
 
 export default clientModels
 

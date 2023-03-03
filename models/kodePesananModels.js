@@ -70,9 +70,9 @@ const kodePesananModels = db.define("kodePesanan", {
 })
 
 
-// kodePesananModels.sync()
-//     .then(() => console.log("tabel kode pesanan berhasil di buat"))
-//     .catch(() => console.log("tabel kodePesanan gagal di buat"))
+ kodePesananModels.sync()
+     .then(() => console.log("tabel kode pesanan berhasil di buat"))
+     .catch(() => console.log("tabel kodePesanan gagal di buat"))
 
 export default kodePesananModels;
 

@@ -69,14 +69,14 @@ const produkModels = db.define("produk", {
     freezeTableName: true,
 })
 
-// produkModels.sync({alter: true})
-//     .then(() => {
-//         console.log("tabel produk sukses dibuat")
-//     })
-//     .catch(err => {
-//         console.log(err)
-//         console.log("tabel produk gagal dibuat")
-//     })
+produkModels.sync({alter: true})
+     .then(() => {
+         console.log("tabel produk sukses dibuat")
+     })
+     .catch(err => {
+         console.log(err)
+         console.log("tabel produk gagal dibuat")
+     })
 
 
 export default produkModels

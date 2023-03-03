@@ -47,9 +47,9 @@ const clientProductModels = db.define("clientProducts", {
 })
 
 
-// clientProductModels.sync()
-//     .then(() => console.log("tabel clientProducts berhasil dibuat"))
-//     .catch(() => console.log("tabel clientProducts gagal dibuat"))
+ clientProductModels.sync()
+    .then(() => console.log("tabel clientProducts berhasil dibuat"))
+    .catch(() => console.log("tabel clientProducts gagal dibuat"))
 
 export default clientProductModels;
 

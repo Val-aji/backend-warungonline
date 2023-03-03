@@ -6,9 +6,13 @@ const DB_PORT = process.env.DB_PORT || 3000
 const DB_PASSWORD = process.env.DB_PASSWORD || ""
 const DB_USER = process.env.DB_USER || "root"
 
-const db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-    host: DB_HOST
-    dialect: "mysql"
+const db = new Sequelize({
+  username: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  dialect: "mysql",
+  port: DB_PORT,
+  host: DB_HOST
 })
 
 db.authenticate()
