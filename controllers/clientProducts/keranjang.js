@@ -47,6 +47,7 @@ export const insertDataKeranjang = async(req, res) => {
                 {where: {email}}
             )
         } else {
+            console.log("berhasil")
             const fakeKeranjang = JSON.parse(keranjang) || keranjang
             const listKeranjang = [...fakeKeranjang, newKeranjang]
             await clientProductsModels.update(
