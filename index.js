@@ -13,7 +13,7 @@ const app = express()
 app.use(cookieParser())
 app.use(cors())
 app.use(FileUpload())
-app.use(express.static(join("public")))
+app.use(express.static("public"))
 
 app.use("/produk", produkRouter)
 app.use("/client", clientRouter)
