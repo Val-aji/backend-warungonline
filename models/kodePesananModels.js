@@ -5,20 +5,29 @@ import db from "../config/database.js"
 const kodePesananModels = db.define("kodePesanan", {
     kodePesanan: {
         type: DataTypes.STRING,
-        validate: {
-            len: [10, 15]
-        },
         allowNull: false
     },
     estimasi: {
         type: DataTypes.STRING,
         allowNull: true
     },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    emailPenjual: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     namaLengkap: {
         type: DataTypes.STRING,
         validate: {
             len: [3, 100]
         },
+        allowNull: false
+    },
+    nomorWhatsapp: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     alamat: {

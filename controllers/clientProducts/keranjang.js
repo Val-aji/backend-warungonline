@@ -29,14 +29,14 @@ export const getDataKeranjang = async(req, res) => {
 
 export const insertDataKeranjang = async(req, res) => {
     const {email, kodeProduk, tanggal} = req.body
-    
+    console.log(email)
     try {
         const dataKeranjang = await clientProductsModels.findOne({
             attributes: ["id", "keranjang"],
             where: {email}
         })
 
-        const keranjang = dataKeranjang.dataValues.keranjang
+        const keranjang = dataKeranjang.keranjang
         const newKeranjang = {kodeProduk, tanggal}
         
 
@@ -47,7 +47,6 @@ export const insertDataKeranjang = async(req, res) => {
                 {where: {email}}
             )
         } else {
-            console.log("berhasil")
             const fakeKeranjang = JSON.parse(keranjang) || keranjang
             const listKeranjang = [...fakeKeranjang, newKeranjang]
             await clientProductsModels.update(
@@ -56,7 +55,7 @@ export const insertDataKeranjang = async(req, res) => {
             )
         }
         
-        return viewSuccess(res, "menambah data keranjang berhasil", [newKeranjang])
+        return viewSuccess(res, "menambah data keranjang berhasil", newKeranjang)
 
     } catch (error) {
         viewError(res, 400,error.message)

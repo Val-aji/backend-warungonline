@@ -21,7 +21,7 @@ const clientProductModels = db.define("clientProducts", {
         type: DataTypes.JSON,
         allowNull: true,
         defaultValue: []
-        // [{kodePesanan, tanggalPesan, status, }]
+        // [{kodePesanan, tanggalPesan, status, estimasi}]
     },
     voucher: {
         type: DataTypes.JSON,

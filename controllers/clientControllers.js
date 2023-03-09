@@ -132,6 +132,24 @@ export const login = async (req, res) => {
     }
 }
 
+
+export const getIdentitas = async(req, res) => {
+    try {
+        const {email} = req.body
+        
+        const result = await clientModels.findOne({
+            attributes: ["namaLengkap", "id", "nomorWhatsapp"],
+            where: {email}
+        })
+
+        viewSuccess(res, "get identias sukses", result)
+
+
+    } catch (error) {
+        viewError(res, 400, "silahkan login terlebih dahulu")
+    }
+}
+
 export const getToken = async(req, res) => {
     const {email} = req.body
     console.log(email)
