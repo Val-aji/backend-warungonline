@@ -37,11 +37,10 @@ export const insertDataKeranjang = async(req, res) => {
         })
 
         const keranjang = JSON.parse(dataKeranjang.keranjang)
+        console.log({keranjang})
         const newKeranjang = {kodeProduk, tanggal, jumlah: 1}
         
         if(!keranjang || keranjang.length === 0 || keranjang == "[]") {
-            
-
             // jika keranjang kosong, maka buat baru
             await clientProductsModels.update(
                 {keranjang: [newKeranjang]},
@@ -73,13 +72,15 @@ export const insertDataKeranjang = async(req, res) => {
                 {keranjang: listKeranjang},
                 {where: {email}}
             )
-            console.log({result})
+            
         }
         
-        return viewSuccess(res, "menambah data keranjang berhasil", newKeranjang)
+        viewSuccess(res, "menambah data keranjang berhasil", newKeranjang)
 
     } catch (error) {
         viewError(res, 400,error.message)
+        console.log({error})
+        return false
     }
 
 }
