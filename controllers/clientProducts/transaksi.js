@@ -2,7 +2,7 @@ import clientProductsModels from "../../models/clientProductsModels.js"
 import { viewSuccess, viewError
  } from "./view.js"
 import { checkout } from "../kodePesananControllers.js"
-import clientModels from "../../models/clientModels.js"
+
 
 //hanya untuk antrian
 export const transaksi = async(req, res) => {
@@ -11,28 +11,16 @@ export const transaksi = async(req, res) => {
         const {email, kodePesanan, tanggalPesanan, dataTransaksi} = req.body
         const data = await clientProductsModels.findOne({
             where: {email},
-            attributes: ["id", "transaksi"],
+            attributes: ["id", "transaksi", "keranjang"],
         })
 
         
-
         if(!data) {
             viewError(res, 404, "email tidak ditemukan")
             return false
         } else {
-            // let isValid = true
-            // JSON.parse(data.transaksi).map((item) => {
-            //     if(item.kodePesanan.trim() === kodePesanan.trim()) {
-            //         isValid = false
-            //     }
-            // })
-
-            // if(!isValid) { 
-            //     viewError(res, 400, "kode pesanan sudah ada sebelumnya")
-            //         return false
-            // }
-
-            const {transaksi} = data
+            
+            const {transaksi, keranjang} = data
 
             const jumlahProduk = JSON.parse(transaksi).filter(i => i.status === "antrian")
             let differenceMinutes = 0
@@ -93,6 +81,7 @@ export const transaksi = async(req, res) => {
             
             
             if(resCek) {
+                
                 viewSuccess(res, "checkout berhasil", newTransaksi)
             } else {
                 viewError(res, "checkout gagal", newTransaksi)

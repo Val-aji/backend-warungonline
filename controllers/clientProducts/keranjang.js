@@ -36,23 +36,44 @@ export const insertDataKeranjang = async(req, res) => {
             where: {email}
         })
 
-        const keranjang = dataKeranjang.keranjang
-        const newKeranjang = {kodeProduk, tanggal}
+        const keranjang = JSON.parse(dataKeranjang.keranjang)
+        const newKeranjang = {kodeProduk, tanggal, jumlah: 1}
         
-
         if(!keranjang || keranjang.length === 0 || keranjang == "[]") {
+            
+
             // jika keranjang kosong, maka buat baru
             await clientProductsModels.update(
                 {keranjang: [newKeranjang]},
                 {where: {email}}
             )
+
+
         } else {
-            const fakeKeranjang = JSON.parse(keranjang) || keranjang
-            const listKeranjang = [...fakeKeranjang, newKeranjang]
-            await clientProductsModels.update(
+            let cekDuplikat = false
+            const result = keranjang.slice().map(i => {
+                if(i.kodeProduk === kodeProduk) {
+                    const newObj = {
+                        kodeProduk: i.kodeProduk,
+                        tanggal: new Date().toLocaleString("ID-id", {timezone: "asia/jakarta"}),
+                        jumlah: i.jumlah + 1
+                    }
+                    cekDuplikat = true
+                    return newObj
+                } else {
+                    return i   
+                }
+            }) 
+            const listKeranjang = [...result]
+            if(!cekDuplikat) {
+                console.log("duplikat")
+                listKeranjang.push(newKeranjang)
+            }
+            const resut = await clientProductsModels.update(
                 {keranjang: listKeranjang},
                 {where: {email}}
             )
+            console.log({result})
         }
         
         return viewSuccess(res, "menambah data keranjang berhasil", newKeranjang)

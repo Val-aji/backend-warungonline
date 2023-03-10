@@ -1,9 +1,7 @@
 import kodePesananModels from "../models/kodePesananModels.js"
 import { viewError, viewSuccess } from "./clientProducts/view.js"
-import clientModels from "../models/clientModels.js"
 
 export const checkout = async(data, body) => {
-    // const {kodePesanan,nama, nomor, alamat, metode, status, listProduk, subtotal} = data
 
     try {
         const {email, kodePesanan, tanggalPesanan, estimasi, status} = body
@@ -29,7 +27,7 @@ export const checkout = async(data, body) => {
             tanggalPesanan: dateTime,
         }
 
-        const result = await kodePesananModels.create(obj)
+        await kodePesananModels.create(obj)
         return true    
     } catch (error) {
         console.log({error})
@@ -83,3 +81,14 @@ export const getTransaksi = async (req, res) => {
 }
 
 
+export const getKodePesanan = async() => {
+    try {
+        const result = await kodePesananModels.findAll({
+            attributes: ["id", "kodePesanan"]
+        })
+
+        viewSuccess(res, "get Kode Pesanan Success", result)
+    } catch (error) {
+        viewError(res, 500, "Kode Pesanan gagal di dapat")
+    }
+}
