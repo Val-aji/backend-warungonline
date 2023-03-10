@@ -36,8 +36,9 @@ export const insertDataKeranjang = async(req, res) => {
             where: {email}
         })
         console.log("data keranjang", dataKeranjang.keranjang)
-        
-        const keranjang = JSON.parse(dataKeranjang.keranjang) || dataKeranjang.keranjang
+        console.log("length", dataKeranjang.keranjang.ength)
+        console.log(typeof dataKeranjang.keranjang)
+        const keranjang = dataKeranjang.keranjang
         console.log({keranjang})
         const newKeranjang = {kodeProduk, tanggal, jumlah: 1}
         
