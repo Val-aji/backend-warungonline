@@ -15,10 +15,6 @@ const kodePesananModels = db.define("kodePesanan", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    emailPenjual: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     namaLengkap: {
         type: DataTypes.STRING,
         validate: {

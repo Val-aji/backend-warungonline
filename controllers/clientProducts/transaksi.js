@@ -2,7 +2,7 @@ import clientProductsModels from "../../models/clientProductsModels.js"
 import { viewSuccess, viewError
  } from "./view.js"
 import { checkout } from "../kodePesananControllers.js"
-
+import clientModels from "../../models/clientModels.js"
 
 //hanya untuk antrian
 export const transaksi = async(req, res) => {
@@ -11,9 +11,10 @@ export const transaksi = async(req, res) => {
         const {email, kodePesanan, tanggalPesanan, dataTransaksi} = req.body
         const data = await clientProductsModels.findOne({
             where: {email},
-            attributes: ["id", "transaksi"]
+            attributes: ["id", "transaksi"],
         })
 
+        
 
         if(!data) {
             viewError(res, 404, "email tidak ditemukan")
@@ -44,10 +45,10 @@ export const transaksi = async(req, res) => {
             } else if(jumlahProduk.length === 0) {
                 differenceHours += 1
             } 
-            // else if(jumlahProduk.length > 100) {
-            //     viewError(res, 400, "maksimal antrian 3")
-            //     return false
-            // }
+            else if(jumlahProduk.length > 100) {
+                viewError(res, 400, "maksimal antrian 3")
+                return false
+            }
             
             const newTime = new Date().toLocaleString("ID-id")
             let [bulan, tanggal, tahun] =  newTime.split(" ")[0].split("/")
@@ -66,8 +67,14 @@ export const transaksi = async(req, res) => {
 
             const estimasi = `${bulan}/${tanggal}/${tahun} ${jam}:${menit}:${detik}`
 
-            const newTransaksi = {kodePesanan, tanggalPesanan, status: "antrian", estimasi }
+            const newTransaksi = {
+                kodePesanan, 
+                tanggalPesanan, 
+                status: "antrian", 
+                estimasi
+            }
     
+            
             if(!transaksi || transaksi.length === 0 || transaksi == "[]") {
                 const data = await clientProductsModels.update(
                     {transaksi: [newTransaksi]},

@@ -13,10 +13,9 @@ export const checkout = async(data, body) => {
 
 
         const newAlamat = namaJalan + " " + alamat.slice().reverse().join(" ")
-
+        const dateTime = new Date().toLocaleString("ID-id")
         const obj = {
             email,
-            emailPenjual,
             kodePesanan,
             estimasi,
             namaLengkap,
@@ -27,12 +26,10 @@ export const checkout = async(data, body) => {
             listProduk,
             jumlahProduk,
             subtotal,
-            tanggalPesanan,
-            tanggalPesanan: "false"
+            tanggalPesanan: dateTime,
         }
 
         const result = await kodePesananModels.create(obj)
-        console.log(result)
         return true    
     } catch (error) {
         console.log({error})
