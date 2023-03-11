@@ -22,7 +22,9 @@ export const transaksi = async(req, res) => {
             
             const {transaksi, keranjang} = data
 
-            const jumlahProduk = JSON.parse(transaksi).filter(i => i.status === "antrian")
+            const cek = typeof transaksi == "string" ? JSON.parse(transaksi) : transaksi
+            console.log({cek})
+            const jumlahProduk = cek.filter(i => i.status === "antrian")
             let differenceMinutes = 0
             let differenceHours = 0
 
@@ -63,25 +65,24 @@ export const transaksi = async(req, res) => {
             }
     
             
-            if(!transaksi || transaksi.length === 0 || transaksi == "[]") {
-                const data = await clientProductsModels.update(
-                    {transaksi: [newTransaksi]},
-                    {where: {email}}
-                )
-            } else {
-                const listTransaksi = [...JSON.parse (transaksi), newTransaksi]
-                await clientProductsModels.update(
-                    {transaksi: listTransaksi},
-                    {where: {email}},
-                )
-            }
-            
-            
             const resCek = checkout(JSON.parse(dataTransaksi), {kodePesanan, email, tanggalPesanan, estimasi, status: "antrian"})
             
             
             if(resCek) {
+                if(!transaksi || transaksi.length === 0 || transaksi == "[]") {
+                    const data = await clientProductsModels.update(
+                        {transaksi: [newTransaksi]},
+                        {where: {email}}
+                    )
+                } else {
+                    const listTransaksi = [...JSON.parse (transaksi), newTransaksi]
+                    await clientProductsModels.update(
+                        {transaksi: listTransaksi},
+                        {where: {email}},
+                    )
+                }
                 
+                console.log({keranjang})
                 viewSuccess(res, "checkout berhasil", newTransaksi)
             } else {
                 viewError(res, "checkout gagal", newTransaksi)
@@ -98,8 +99,9 @@ export const transaksi = async(req, res) => {
 
 
 export const getDataTransaksi = async(req, res) => {
-    const {email} = req.body
+    
     try {
+        const {email} = req.body
         const data = await clientProductsModels.findAll(
             {attributes: ["transaksi", "id"]},
             {where: {email}}

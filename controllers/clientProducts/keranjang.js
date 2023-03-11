@@ -13,13 +13,14 @@ export const getAllData = async(req, res) => {
 }
 
 export const getDataKeranjang = async(req, res) => {
-    console.log(req.body)
-    const {email} = req.body
+    
     try {
+        const {email} = req.body
         const data = await clientProductsModels.findOne(
             {attributes: ["id", "keranjang" ]},
             {where: {email}}
         )
+        console.log(JSON.parse(data.dataValues.keranjang))
         viewSuccess(res, "get data keranjang success", data)
     } catch (error) {
         viewError(res, 400, error.message)
@@ -35,10 +36,11 @@ export const insertDataKeranjang = async(req, res) => {
             attributes: ["id", "keranjang"],
             where: {email}
         })
-        console.log("data keranjang", dataKeranjang.keranjang)
-        console.log("length", dataKeranjang.keranjang.ength)
-        console.log(typeof dataKeranjang.keranjang)
-        const keranjang = dataKeranjang.keranjang
+        
+        // const keranjang = dataKeranjang.keranjang 
+        const cek = typeof dataKeranjang.keranjang == "string"
+        const keranjang =  cek ? JSON.parse(dataKeranjang.keranjang) : dataKeranjang.keranjang
+        
         console.log({keranjang})
         const newKeranjang = {kodeProduk, tanggal, jumlah: 1}
         
