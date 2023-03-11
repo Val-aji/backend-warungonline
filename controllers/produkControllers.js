@@ -79,7 +79,7 @@ export const insertProduk = async (req, res) => {
 
     const cbError = msg => viewError(res, 400, {message: null},msg)
     
-    const url = req.protocol + "://" + req.get("host") + "/image" 
+    const url = "https" + "://" + req.get("host") + "/image" 
     const gambarProduk = handleGambar(req.files, url, cbError)
     
     
