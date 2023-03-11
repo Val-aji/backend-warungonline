@@ -23,7 +23,7 @@ export const transaksi = async(req, res) => {
             const {transaksi, keranjang} = data
 
             const cek = typeof transaksi == "string" ? JSON.parse(transaksi) : transaksi
-            console.log({cek})
+            
             const jumlahProduk = cek.filter(i => i.status === "antrian")
             let differenceMinutes = 0
             let differenceHours = 0
@@ -50,10 +50,10 @@ export const transaksi = async(req, res) => {
                 jam += 1
             }
 
-            if(jam >= 24) {
-                viewError(res, 400, "batas waktu checkout melebihi batas")
-                return false
-            }
+            // if(jam >= 24) {
+            //     viewError(res, 400, "batas waktu checkout melebihi batas")
+            //     return false
+            // }
 
             const estimasi = `${bulan}/${tanggal}/${tahun} ${jam}:${menit}:${detik}`
 
@@ -75,14 +75,29 @@ export const transaksi = async(req, res) => {
                         {where: {email}}
                     )
                 } else {
-                    const listTransaksi = [...JSON.parse (transaksi), newTransaksi]
-                    await clientProductsModels.update(
-                        {transaksi: listTransaksi},
-                        {where: {email}},
-                    )
+                    const transaksiNew = typeof transaksi == "string" ? JSON.parse(transaksi) : transaksi
+                    const listTransaksi = [...transaksiNew, newTransaksi]
+                    try {
+                        await clientProductsModels.update(
+                            {transaksi: listTransaksi},
+                            {where: {email}},
+                        )    
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    
                 }
                 
-                console.log({keranjang})
+                const listProduk = typeof dataTransaksi == "string" ? JSON.parse(dataTransaksi).listProduk : dataTransaksi.listProduk
+                const arrList = listProduk.map(item => item.kodeProduk)
+                const newKeranjangClient = keranjang.filter(item => {
+                    return !arrList.includes(item.kodeProduk)
+                })
+                
+                await clientProductsModels.update(
+                    {keranjang: newKeranjangClient},
+                    {where: {email}}
+                )
                 viewSuccess(res, "checkout berhasil", newTransaksi)
             } else {
                 viewError(res, "checkout gagal", newTransaksi)

@@ -20,9 +20,10 @@ export const getDataKeranjang = async(req, res) => {
             {attributes: ["id", "keranjang" ]},
             {where: {email}}
         )
-        console.log(JSON.parse(data.dataValues.keranjang))
+        
         viewSuccess(res, "get data keranjang success", data)
     } catch (error) {
+        console.log({error})
         viewError(res, 400, error.message)
     }
 }
@@ -39,6 +40,7 @@ export const insertDataKeranjang = async(req, res) => {
         
         // const keranjang = dataKeranjang.keranjang 
         const cek = typeof dataKeranjang.keranjang == "string"
+        
         const keranjang =  cek ? JSON.parse(dataKeranjang.keranjang) : dataKeranjang.keranjang
         
         console.log({keranjang})
@@ -72,7 +74,7 @@ export const insertDataKeranjang = async(req, res) => {
                 console.log("duplikat")
                 listKeranjang.push(newKeranjang)
             }
-            const resut = await clientProductsModels.update(
+            await clientProductsModels.update(
                 {keranjang: listKeranjang},
                 {where: {email}}
             )
@@ -82,8 +84,9 @@ export const insertDataKeranjang = async(req, res) => {
         viewSuccess(res, "menambah data keranjang berhasil", newKeranjang)
 
     } catch (error) {
-        viewError(res, 400,error.message)
         console.log({error})
+        viewError(res, 400, error.message)
+        
         return false
     }
 

@@ -38,7 +38,7 @@ export const checkout = async(data, body) => {
 }
 
 
-export const getTransaksiByKode = async (req, res) => {
+export const getTransaksiByKode = async(req, res) => {
     try {
         const {email, kodePesanan} = req.body
         const result = await kodePesananModels.findOne({
@@ -57,6 +57,8 @@ export const getTransaksiByKode = async (req, res) => {
         viewError(res, 400, "Get Transaksi By Kode Error")
     }
 }
+
+
 
 export const getTransaksi = async (req, res) => {
     try {
