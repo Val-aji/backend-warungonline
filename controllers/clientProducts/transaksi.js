@@ -166,6 +166,7 @@ export const transaksiSelesai = async(req, res) => {
                 return false
             }  else {
                 const tanggalBerakhir  = new Date().toLocaleString("ID-id", {timezone: "asia/jakarta"})
+                console.log({tanggalBerakhir})
                 const resultSuccess = await kodePesananModels.update(
                     {status: "selesai", tanggalBerakhir},
                     {where: {kodePesanan}}
