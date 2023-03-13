@@ -5,7 +5,7 @@ import {
     insertDataKeranjang
 } from "../controllers/clientProducts/keranjang.js"
 
-import { transaksi, getDataTransaksi } from "../controllers/clientProducts/transaksi.js"
+import { transaksi, getDataTransaksi, transaksiSelesai } from "../controllers/clientProducts/transaksi.js"
 import { incrementPoint } from "../controllers/clientProducts/point.js"
 
 const router = express.Router()
@@ -18,6 +18,7 @@ router.put("/keranjang", insertDataKeranjang)
 
 router.post("/transaksi", getDataTransaksi)
 router.put("/transaksi", transaksi)
+router.put("/transaksi/selesai", transaksiSelesai)
 
 router.put("/point", incrementPoint)
 export default router

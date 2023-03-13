@@ -2,7 +2,7 @@ import clientProductsModels from "../../models/clientProductsModels.js"
 import { viewSuccess, viewError
  } from "./view.js"
 import { checkout } from "../kodePesananControllers.js"
-
+import kodePesananModels from "../../models/kodePesananModels.js"
 
 //hanya untuk antrian
 export const transaksi = async(req, res) => {
@@ -117,7 +117,7 @@ export const getDataTransaksi = async(req, res) => {
     
     try {
         const {email} = req.body
-        const data = await clientProductsModels.findAll(
+        const data = await clientProductsModels.findOne(
             {attributes: ["transaksi", "id"]},
             {where: {email}}
         )        
@@ -128,4 +128,58 @@ export const getDataTransaksi = async(req, res) => {
 }
 
 
+export const transaksiSelesai = async(req, res) => {
+    try {
+        const {kodePesanan, email} = req.body
+        console.log({kodePesanan})
+        const result = await clientProductsModels.findOne({
+            attributes: ["id", "transaksi"],
+            where: {email}
+        })
+
+        if(!result) {
+            viewError(res, 404, "kodePesanan atau email tidak ditemukan")
+            return false
+        }
+
+        const {transaksi} = result
+        const newTransaksi = typeof transaksi == "string"  ? JSON.parse(transaksi) : transaksi
+        if(newTransaksi.length <= 0) {
+            viewError(res, 400, "transaksi tidak ada ")
+                return false
+        } else {
+            const findTransaksi = newTransaksi.slice().filter(item => item.kodePesanan === kodePesanan)
+            console.log({findTransaksi})
+            if(!findTransaksi || findTransaksi.length === 0) {
+                viewError(res, 404, "invalid kode pesanan")
+                
+                return false
+            }
+
+            const newValueTransaksi = newTransaksi.slice().filter(item => item.kodePesanan !== kodePesanan)
+            const resultUpdate = await clientProductsModels.update(
+                {transaksi: newValueTransaksi},
+                {where: {email}}
+            )
+            if(!resultUpdate) {
+                viewError(res, 400, "update transaksi invalid")
+                return false
+            }  else {
+                const tanggalBerakhir  = new Date().toLocaleString("ID-id", {timezone: "asia/jakarta"})
+                const resultSuccess = await kodePesananModels.update(
+                    {status: "selesai", tanggalBerakhir},
+                    {where: {kodePesanan}}
+                )
+                
+                viewSuccess(res, 400, resultSuccess)
+                return false
+            }
+        }
+
+
+
+    } catch (error) {
+        viewError(res, 401, error.message)
+    }
+}
 

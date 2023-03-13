@@ -68,7 +68,6 @@ export const getTransaksi = async (req, res) => {
         })
         
         
-        
         if(!result || result.length <= 0) {
             viewError(res, 404, "email tidak di kenali")
             return false
