@@ -4,6 +4,9 @@
   "type": "module",
   "description": "backend web warungonline",
   "main": "index.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "nodemon node index.js",
     "start": "node index.js",
