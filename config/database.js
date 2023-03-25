@@ -21,9 +21,11 @@ db.authenticate()
     .then(() => {
         console.log("koneksi database success")
     })
-    .catch(() => {
+    .catch(err => {
+        
         console.log("koneksi databases gagal")
-    })
+        console.log({err})
+ })
 
 export default db
 
