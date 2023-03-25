@@ -9,6 +9,13 @@ import kodePesananRouter from "./routes/kodePesananRoutes.js"
 import {join} from "path"
 
 const app = express()
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', "default-src 'self' warungonline.vercel.app backend-warungonline.vercel.app; style-src 'unsafe-inline'");
+  next();
+});
+
+//...rest of your code
+
 
 app.use(cookieParser())
 app.use(cors())
